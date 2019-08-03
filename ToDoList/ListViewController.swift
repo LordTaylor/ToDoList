@@ -48,6 +48,9 @@ class ListViewController :UIViewController {
         let addVC = AddItemViewController()
         navigationController?.pushViewController(addVC, animated: true)
     }
+    override func viewDidAppear(_ animated: Bool) {
+        tableView.reloadData()
+    }
 }
 extension UIViewController:UITableViewDataSource {
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -78,4 +81,5 @@ extension UIViewController :UITableViewDelegate{
     public func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
         openDetailView(indexPath.row)
     }
+    
 }

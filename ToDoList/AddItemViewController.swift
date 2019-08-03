@@ -9,31 +9,39 @@
 import Foundation
 import UIKit
 
-class AddItemViewController : UIViewController{
+class AddItemViewController : UIViewController, UITextFieldDelegate{
     var safeArea = UILayoutGuide()
     let addButton = UIButton()
+    public let todoItemText = UITextField()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .purple
-    
+        
         safeArea = view.layoutMarginsGuide
+        
+        setupTextField()
         setupButtonToView()
-//        setupTextField()
     }
     
     @objc func addItemClick(){
-        navigationController?.popViewController(animated: true)
+        if (todoItemText.text! != ""){
+            list.append(todoItemText.text!)
+            navigationController?.popViewController(animated: true)
+        }
     }
     
     func setupTextField(){
-        let todoItemText = UITextField()
-        view.addSubview(todoItemText)
+        
         todoItemText.translatesAutoresizingMaskIntoConstraints = false
-        todoItemText.topAnchor.constraint(equalTo: safeArea.bottomAnchor).isActive = true
-        todoItemText.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 50.0).isActive = true
-        todoItemText.rightAnchor.constraint(equalTo: view.rightAnchor, constant: 50.0).isActive = true
-        todoItemText.bottomAnchor.constraint(equalTo: addButton.topAnchor, constant: 20.0).isActive = true
+        todoItemText.backgroundColor = .white
+        todoItemText.delegate = self
+        view.addSubview(todoItemText)
+        NSLayoutConstraint.activate([
+            todoItemText.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor,constant: 100.0),
+            todoItemText.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 1.0),
+            todoItemText.rightAnchor.constraint(equalTo: view.rightAnchor, constant: 1.0),
+            ])
         
         
     }
@@ -42,13 +50,14 @@ class AddItemViewController : UIViewController{
         
         addButton.addTarget(self, action: #selector(AddItemViewController.addItemClick), for: .touchUpInside)
         addButton.setTitle("Add to List", for: .normal)
-        view.addSubview(addButton)
         addButton.translatesAutoresizingMaskIntoConstraints = false
-        addButton.topAnchor.constraint(equalTo: safeArea.bottomAnchor).isActive = true
-        addButton.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
-        addButton.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
-        addButton.bottomAnchor.constraint(equalTo: view.topAnchor).isActive = true
-
+        view.addSubview(addButton)
+        NSLayoutConstraint.activate([
+            addButton.topAnchor.constraint(equalTo: todoItemText.bottomAnchor),
+            addButton.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            addButton.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            ])
+        
         
     }
 }
