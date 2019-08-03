@@ -10,30 +10,45 @@ import Foundation
 import UIKit
 
 class AddItemViewController : UIViewController{
+    var safeArea = UILayoutGuide()
+    let addButton = UIButton()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .purple
+    
+        safeArea = view.layoutMarginsGuide
+        setupButtonToView()
+//        setupTextField()
     }
     
     @objc func addItemClick(){
         navigationController?.popViewController(animated: true)
+    }
+    
+    func setupTextField(){
+        let todoItemText = UITextField()
+        view.addSubview(todoItemText)
+        todoItemText.translatesAutoresizingMaskIntoConstraints = false
+        todoItemText.topAnchor.constraint(equalTo: safeArea.bottomAnchor).isActive = true
+        todoItemText.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 50.0).isActive = true
+        todoItemText.rightAnchor.constraint(equalTo: view.rightAnchor, constant: 50.0).isActive = true
+        todoItemText.bottomAnchor.constraint(equalTo: addButton.topAnchor, constant: 20.0).isActive = true
+        
         
     }
     
-    func addButtonToView(){
-        let addButton = UIButton()
-        addButton.translatesAutoresizingMaskIntoConstraints = false
+    func setupButtonToView(){
+        
         addButton.addTarget(self, action: #selector(AddItemViewController.addItemClick), for: .touchUpInside)
         addButton.setTitle("Add to List", for: .normal)
         view.addSubview(addButton)
-        
-        let horizontalCenter = NSLayoutConstraint(item: addButton, attribute: .centerX, relatedBy: .equal, toItem: view, attribute: .centerX, multiplier: 1.0, constant: 0)
-        let verticalCenter = NSLayoutConstraint(item: addButton, attribute: .centerY, relatedBy: .equal, toItem: view, attribute: .centerY, multiplier: 1.0, constant: 0)
-        let width = NSLayoutConstraint(item: addButton, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .width, multiplier: 1.0, constant: 100)
-        let height = NSLayoutConstraint(item: addButton, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .height, multiplier: 1.0, constant: 75)
-        let constraints:[NSLayoutConstraint]=[horizontalCenter,verticalCenter,width,height]
-        NSLayoutConstraint.activate(constraints)
+        addButton.translatesAutoresizingMaskIntoConstraints = false
+        addButton.topAnchor.constraint(equalTo: safeArea.bottomAnchor).isActive = true
+        addButton.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        addButton.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+        addButton.bottomAnchor.constraint(equalTo: view.topAnchor).isActive = true
+
         
     }
 }

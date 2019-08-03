@@ -9,9 +9,9 @@
 import Foundation
 import UIKit
 
-var list = ["first task","second task","third task","forth task"]
 
-class ListViewController :UIViewController ,UITableViewDataSource{
+
+class ListViewController :UIViewController {
     
     let tableView = UITableView()
     var safeArea = UILayoutGuide()
@@ -23,6 +23,8 @@ class ListViewController :UIViewController ,UITableViewDataSource{
         safeArea = view.layoutMarginsGuide
         addNavigationButton()
         setupList()
+        tableView.dataSource = self
+        tableView.delegate = self
     }
     
     
@@ -43,27 +45,37 @@ class ListViewController :UIViewController ,UITableViewDataSource{
     }
     
     @objc func addNewItemClick(){
-        navigationController?.pushViewController(AddItemViewController(), animated: true)
+        let addVC = AddItemViewController()
+        navigationController?.pushViewController(addVC, animated: true)
     }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+}
+extension UIViewController:UITableViewDataSource {
+    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return list.count
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         cell.textLabel?.text = list[indexPath.row]
-        
+        cell.target(forAction: #selector (openDetailView), withSender: .none)
+        cell.accessoryType = .detailDisclosureButton
         return cell
     }
-    //        func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath){
-    //            if editingStyle == UITableViewCell.EditingStyle.delete{
-    //                list.remove(at: indexPath.row)
-    //                myTabView.reloadData()
-    //            }
-    //        }
-    override func viewDidAppear(_ animated: Bool) {
-        tableView.reloadData()
-    }
+
     
+    @objc func openDetailView(_ index:Int){
+        let detailView = DetailViewController()
+        detailView.setData(list[index])
+        navigationController?.pushViewController(detailView, animated: true)
+    }
+//    func viewDidAppear(_ animated: Bool) {
+//        tableView.reloadData()
+//    }
+    
+}
+
+extension UIViewController :UITableViewDelegate{
+    public func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
+        openDetailView(indexPath.row)
+    }
 }
