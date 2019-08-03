@@ -9,20 +9,25 @@
 import Foundation
 import UIKit
 
-class DetailViewController : UIViewController{
+class DetailViewController : UIViewController,UITextViewDelegate{
+    let todoItemText = UILabel()
     var itemTitle:String=""
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .orange
+        view.backgroundColor = .darkGray
         setupTextView()
     }
     
     
     func setupTextView(){
-        let todoItemText = UITextView()
+        
         todoItemText.translatesAutoresizingMaskIntoConstraints = false
+        todoItemText.sizeToFit()
+        todoItemText.textAlignment = NSTextAlignment.center
         todoItemText.backgroundColor = .white
+        todoItemText.textColor = .purple
         todoItemText.text = itemTitle
+//        todoItemText.delegate = self
         view.addSubview(todoItemText)
         NSLayoutConstraint.activate([
             todoItemText.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor,constant: 100.0),
@@ -30,7 +35,7 @@ class DetailViewController : UIViewController{
             todoItemText.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 1.0),
             ])
         
-        
+
     }
     
     func setData(_ item:String){

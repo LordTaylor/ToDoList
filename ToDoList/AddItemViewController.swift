@@ -10,16 +10,12 @@ import Foundation
 import UIKit
 
 class AddItemViewController : UIViewController, UITextFieldDelegate{
-    var safeArea = UILayoutGuide()
     let addButton = UIButton()
     public let todoItemText = UITextField()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .purple
-        
-        safeArea = view.layoutMarginsGuide
-        
         setupTextField()
         setupButtonToView()
     }
@@ -51,6 +47,7 @@ class AddItemViewController : UIViewController, UITextFieldDelegate{
         addButton.addTarget(self, action: #selector(AddItemViewController.addItemClick), for: .touchUpInside)
         addButton.setTitle("Add to List", for: .normal)
         addButton.translatesAutoresizingMaskIntoConstraints = false
+        addButton.backgroundColor = .darkGray
         view.addSubview(addButton)
         NSLayoutConstraint.activate([
             addButton.topAnchor.constraint(equalTo: todoItemText.bottomAnchor),
